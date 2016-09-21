@@ -1,16 +1,29 @@
+var NpmInstallPlugin = require("npm-install-webpack-plugin");
 module.exports = {
-  entry: './src',
+  entry: './src/index.jsx',
   output: {
-    path: 'builds',
-    filename: 'bundle.js',
+    publicPath: '/',
+    filename: 'bundle.js'
   },
+  plugins: [
+    new NpmInstallPlugin()
+  ],
   module: {
     loaders: [
       {
-        test: /\.js/,
+        exclude: /node_modules/,
         loader: 'babel',
-        include: __dirname + '/src',
+        query: {
+          presets: ['react', 'es2015', 'stage-1']
+        }
       },
     ],
   },
+  resolve: {
+    extensions: ['', '.js', '.jsx']
+  },
+  devServer: {
+    historyApiFallback: true,
+    contentBase: './'
+  }
 };
